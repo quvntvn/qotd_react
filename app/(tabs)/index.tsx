@@ -1,75 +1,86 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useState, useCallback } from 'react';
+import { View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
+import { router, useFocusEffect } from 'expo-router';
+import QuoteService from '../../lib/quoteService';
+import { useTheme } from '../../lib/theme';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+type Quote = {
+  id: string | number;
+  citation: string;
+  auteur: string;
+};
 
-export default function HomeScreen() {
+export default function Home() {
+  const { colors } = useTheme();
+  const [quote, setQuote] = useState<Quote | null>(null);
+  const [daily, setDaily] = useState<Quote | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const loadDaily = useCallback(async () => {
+    setLoading(true);
+    const q = await QuoteService.daily();
+    setQuote(q);
+    setDaily(q);
+    setLoading(false);
+  }, []);
+
+  const loadRandom = useCallback(async () => {
+    setLoading(true);
+    setQuote(await QuoteService.random());
+    setLoading(false);
+  }, []);
+
+  // Charge chaque fois qu’on revient sur l’écran
+  useFocusEffect(
+    useCallback(() => {
+      loadDaily();
+    }, [loadDaily])
+  );
+
+  if (loading || !quote) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator color={colors.primary} />
+      </View>
+    );
+  }
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={[styles.container, { backgroundColor: colors.bg }]}>
+      <Pressable style={styles.settings} onPress={() => router.push('/settings')}>
+        <Text style={[styles.icon, { color: colors.primary }]}>⚙️</Text>
+      </Pressable>
+
+      <View style={styles.card}>
+        <Text style={[styles.quote, { color: colors.text }]}>
+          “{quote.citation}”
+        </Text>
+        <Text style={[styles.author, { color: colors.text }]}>
+          — {quote.auteur}
+        </Text>
+      </View>
+
+      <Pressable style={[styles.btn, { backgroundColor: colors.primary }]} onPress={loadRandom}>
+        <Text style={styles.btnText}>Nouvelle citation</Text>
+      </Pressable>
+
+      {daily && quote.id !== daily.id && (
+        <Pressable onPress={loadDaily} style={{ marginTop: 8 }}>
+          <Text style={{ color: colors.primary }}>Revenir à la citation du jour</Text>
+        </Pressable>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  container: { flex: 1, padding: 24, justifyContent: 'center' },
+  settings: { position: 'absolute', top: 48, right: 24 },
+  icon: { fontSize: 22 },
+  card: { marginBottom: 32 },
+  quote: { fontSize: 22, fontStyle: 'italic', textAlign: 'center' },
+  author: { fontSize: 16, textAlign: 'center', marginTop: 12 },
+  btn: { paddingVertical: 12, paddingHorizontal: 24, borderRadius: 8, alignSelf: 'center' },
+  btnText: { color: '#fff', fontWeight: '600' },
 });
