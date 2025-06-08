@@ -14,20 +14,22 @@ export default function Home() {
   const { colors } = useTheme();
   const [quote, setQuote] = useState<Quote | null>(null);
   const [daily, setDaily] = useState<Quote | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // initial load
+  const [updating, setUpdating] = useState(false); // when fetching new quotes
 
   const loadDaily = useCallback(async () => {
-    setLoading(true);
+    setUpdating(true);
     const q = await QuoteService.daily();
     setQuote(q);
     setDaily(q);
     setLoading(false);
+    setUpdating(false);
   }, []);
 
   const loadRandom = useCallback(async () => {
-    setLoading(true);
+    setUpdating(true);
     setQuote(await QuoteService.random());
-    setLoading(false);
+    setUpdating(false);
   }, []);
 
   // Charge chaque fois qu’on revient sur l’écran
@@ -52,12 +54,14 @@ export default function Home() {
       </Pressable>
 
       <View style={styles.card}>
-        <Text style={[styles.quote, { color: colors.text }]}>
-          “{quote.citation}”
-        </Text>
-        <Text style={[styles.author, { color: colors.text }]}>
-          — {quote.auteur}
-        </Text>
+        {updating ? (
+          <ActivityIndicator color={colors.primary} />
+        ) : (
+          <>
+            <Text style={[styles.quote, { color: colors.text }]}>“{quote.citation}”</Text>
+            <Text style={[styles.author, { color: colors.text }]}>— {quote.auteur}</Text>
+          </>
+        )}
       </View>
 
       <Pressable style={[styles.btn, { backgroundColor: colors.primary }]} onPress={loadRandom}>
@@ -65,7 +69,7 @@ export default function Home() {
       </Pressable>
 
       {daily && quote.id !== daily.id && (
-        <Pressable onPress={loadDaily} style={{ marginTop: 8 }}>
+        <Pressable onPress={loadDaily} style={{ marginTop: 8, alignSelf: 'center' }}>
           <Text style={{ color: colors.primary }}>Revenir à la citation du jour</Text>
         </Pressable>
       )}
@@ -75,7 +79,7 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  container: { flex: 1, padding: 24, justifyContent: 'center' },
+  container: { flex: 1, padding: 24, justifyContent: 'center', alignItems: 'center' },
   settings: { position: 'absolute', top: 48, right: 24 },
   icon: { fontSize: 22 },
   card: { marginBottom: 32 },
