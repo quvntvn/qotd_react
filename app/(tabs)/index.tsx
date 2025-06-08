@@ -64,15 +64,23 @@ export default function Home() {
         )}
       </View>
 
-      <Pressable style={[styles.btn, { backgroundColor: colors.primary }]} onPress={loadRandom}>
-        <Text style={styles.btnText}>Nouvelle citation</Text>
-      </Pressable>
-
-      {daily && quote.id !== daily.id && (
-        <Pressable onPress={loadDaily} style={{ marginTop: 8, alignSelf: 'center' }}>
-          <Text style={{ color: colors.primary }}>Revenir à la citation du jour</Text>
+      <View style={styles.buttons}>
+        <Pressable
+          style={[styles.btn, { backgroundColor: colors.primary }]}
+          onPress={loadRandom}
+        >
+          <Text style={styles.btnText}>Nouvelle citation</Text>
         </Pressable>
-      )}
+
+        {daily && quote.id !== daily.id && (
+          <Pressable
+            onPress={loadDaily}
+            style={[styles.btn, { backgroundColor: colors.primary, marginTop: 8 }]}
+          >
+            <Text style={styles.btnText}>Revenir à la citation du jour</Text>
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 }
@@ -85,6 +93,13 @@ const styles = StyleSheet.create({
   card: { marginBottom: 32 },
   quote: { fontSize: 22, fontStyle: 'italic', textAlign: 'center' },
   author: { fontSize: 16, textAlign: 'center', marginTop: 12 },
+  buttons: {
+    position: 'absolute',
+    bottom: 48,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
   btn: { paddingVertical: 12, paddingHorizontal: 24, borderRadius: 8, alignSelf: 'center' },
   btnText: { color: '#fff', fontWeight: '600' },
 });
