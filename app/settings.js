@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Switch, StyleSheet, Platform } from 'react-native';
+import { View, Text, Switch, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../lib/theme';
 import NotifService from '../lib/notifService';
 
 export default function Settings() {
-  const { colors, mode, setScheme } = useTheme();
+  const { colors } = useTheme();
   const [enabled, setEnabled] = useState(true);
   const [hour, setHour] = useState({ h: 10, m: 0 });
 
@@ -29,11 +28,10 @@ export default function Settings() {
     else await NotifService.disable();
   }
 
-  async function pickTime() {
-    if (Platform.OS === 'android') {
-      const { action, hour: h, minute } = await Notifications.getExpoPushTokenAsync();
-      // simplifié : utilisez TimePicker Android natif si besoin
-    }
+  async function changeHour(h) {
+    setHour({ h, m: 0 });
+    if (enabled) await NotifService.schedule(h, 0);
+    else await AsyncStorage.setItem('prefs', JSON.stringify({ enabled: false, h, m: 0 }));
   }
 
   return (
@@ -46,18 +44,19 @@ export default function Settings() {
         <Switch value={enabled} onValueChange={toggleNotif} />
       </View>
 
-        <View style={styles.row}>
-          <Text style={[styles.label, { color: colors.text }]}>Thème</Text>
-          <Picker
-            selectedValue={mode}
-            style={[styles.picker, { color: colors.text }]}
-            onValueChange={setScheme}
-            dropdownIconColor={colors.text}
-          >
-            <Picker.Item label="Clair" value="light" />
-            <Picker.Item label="Sombre" value="dark" />
-          </Picker>
-        </View>
+      <View style={styles.row}>
+        <Text style={[styles.label, { color: colors.text }]}>Heure de la notification</Text>
+        <Picker
+          selectedValue={hour.h}
+          style={[styles.picker, { color: colors.text }]}
+          onValueChange={changeHour}
+          dropdownIconColor={colors.text}
+        >
+          {Array.from({ length: 24 }, (_, i) => (
+            <Picker.Item key={i} label={`${i}h`} value={i} />
+          ))}
+        </Picker>
+      </View>
     </View>
   );
 }
