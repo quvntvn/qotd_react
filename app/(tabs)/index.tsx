@@ -8,6 +8,7 @@ type Quote = {
   id: string | number;
   citation: string;
   auteur: string;
+  date_creation: string;
 };
 
 export default function Home() {
@@ -58,28 +59,29 @@ export default function Home() {
           <ActivityIndicator color={colors.primary} />
         ) : (
           <>
+            <Text style={[styles.author, { color: colors.text }]}>{quote.auteur}</Text>
+            <Text style={[styles.date, { color: colors.text }]}>{quote.date_creation}</Text>
             <Text style={[styles.quote, { color: colors.text }]}>“{quote.citation}”</Text>
-            <Text style={[styles.author, { color: colors.text }]}>— {quote.auteur}</Text>
           </>
         )}
       </View>
 
       <View style={styles.buttons}>
-        <Pressable
-          style={[styles.btn, { backgroundColor: colors.primary }]}
-          onPress={loadRandom}
-        >
-          <Text style={styles.btnText}>Nouvelle citation</Text>
-        </Pressable>
-
         {daily && quote.id !== daily.id && (
           <Pressable
             onPress={loadDaily}
-            style={[styles.btn, { backgroundColor: colors.primary, marginTop: 8 }]}
+            style={[styles.btn, { backgroundColor: colors.primary }]}
           >
             <Text style={styles.btnText}>Revenir à la citation du jour</Text>
           </Pressable>
         )}
+
+        <Pressable
+          style={[styles.btn, { backgroundColor: colors.primary, marginTop: 8 }]}
+          onPress={loadRandom}
+        >
+          <Text style={styles.btnText}>Nouvelle citation</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -90,9 +92,10 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, justifyContent: 'center', alignItems: 'center' },
   settings: { position: 'absolute', top: 48, right: 24 },
   icon: { fontSize: 22 },
-  card: { marginBottom: 32 },
-  quote: { fontSize: 22, fontStyle: 'italic', textAlign: 'center' },
-  author: { fontSize: 16, textAlign: 'center', marginTop: 12 },
+  card: { marginBottom: 32, alignItems: 'center' },
+  quote: { fontSize: 22, fontStyle: 'italic', textAlign: 'center', marginTop: 12 },
+  author: { fontSize: 16, textAlign: 'center' },
+  date: { fontSize: 14, textAlign: 'center', marginTop: 4 },
   buttons: {
     position: 'absolute',
     bottom: 100,
