@@ -59,9 +59,9 @@ export default function Home() {
           <ActivityIndicator color={colors.primary} />
         ) : (
           <>
-            <Text style={[styles.author, { color: colors.text }]}>{quote.auteur}</Text>
-            <Text style={[styles.date, { color: colors.text }]}>{quote.date_creation}</Text>
             <Text style={[styles.quote, { color: colors.text }]}>“{quote.citation}”</Text>
+            <Text style={[styles.date, { color: colors.text }]}>{quote.date_creation}</Text>
+            <Text style={[styles.author, { color: colors.text }]}>{quote.auteur}</Text>
           </>
         )}
       </View>

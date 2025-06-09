@@ -38,7 +38,7 @@ function NavigationContainer() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style="auto" />
+      <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
     </NavigationThemeProvider>
   );
 }
