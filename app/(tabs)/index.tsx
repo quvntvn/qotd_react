@@ -95,11 +95,11 @@ const styles = StyleSheet.create({
   author: { fontSize: 16, textAlign: 'center', marginTop: 12 },
   buttons: {
     position: 'absolute',
-    bottom: 48,
+    bottom: 100,
     left: 0,
     right: 0,
     alignItems: 'center',
   },
   btn: { paddingVertical: 12, paddingHorizontal: 24, borderRadius: 8, alignSelf: 'center' },
-  btnText: { color: '#fff', fontWeight: '600' },
+  btnText: { color: '#fff', fontWeight: '600', fontSize: 18 },
 });
