@@ -9,10 +9,10 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { ThemeProvider } from '../lib/theme';
+import { ThemeProvider, useTheme } from '../lib/theme';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const systemScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -23,16 +23,22 @@ export default function RootLayout() {
   }
 
   return (
-    <NavigationThemeProvider
-      value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-    >
-      <ThemeProvider scheme={colorScheme ?? 'light'}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
+    <ThemeProvider scheme={systemScheme ?? 'light'}>
+      <NavigationContainer />
+    </ThemeProvider>
+  );
+}
+
+function NavigationContainer() {
+  const { mode } = useTheme();
+
+  return (
+    <NavigationThemeProvider value={mode === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style="auto" />
     </NavigationThemeProvider>
   );
 }
