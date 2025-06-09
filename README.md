@@ -6,8 +6,11 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 1. Install dependencies
 
+   Install the picker library used in the settings screen:
+
    ```bash
    npm install
+   npx expo install @react-native-picker/picker
    ```
 
 2. Start the app
