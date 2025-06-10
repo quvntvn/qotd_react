@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "qotd_android",
+    "name": "Citation du jour",
     "slug": "qotd_android",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,7 +13,10 @@
     },
     "android": {
       "package": "com.example.qotd",
-      "permissions": ["NOTIFICATIONS", "SCHEDULE_EXACT_ALARM"],
+      "permissions": [
+        "NOTIFICATIONS",
+        "SCHEDULE_EXACT_ALARM"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -39,6 +42,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "bc899d1c-9e67-4d3d-8d05-c2cf1dfdf5b3"
+      }
     }
   }
 }
