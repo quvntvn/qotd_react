@@ -80,7 +80,7 @@ export default function Home() {
           style={[styles.btn, { backgroundColor: colors.primary, marginTop: 8 }]}
           onPress={loadRandom}
         >
-          <Text style={styles.btnText}>Nouvelle citation</Text>
+          <Text style={styles.btnText}>Citation aléatoire</Text>
         </Pressable>
       </View>
     </View>
