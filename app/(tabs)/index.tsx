@@ -60,7 +60,9 @@ export default function Home() {
         ) : (
           <>
             <Text style={[styles.quote, { color: colors.text }]}>“{quote.citation}”</Text>
-            <Text style={[styles.date, { color: colors.text }]}>{quote.date_creation}</Text>
+            <Text style={[styles.date, { color: colors.text }]}>
+              {new Date(quote.date_creation).getFullYear()}
+            </Text>
             <Text style={[styles.author, { color: colors.text }]}>{quote.auteur}</Text>
           </>
         )}
@@ -68,16 +70,13 @@ export default function Home() {
 
       <View style={styles.buttons}>
         {daily && quote.id !== daily.id && (
-          <Pressable
-            onPress={loadDaily}
-            style={[styles.btn, { backgroundColor: colors.primary }]}
-          >
+          <Pressable onPress={loadDaily} style={[styles.btn, { backgroundColor: '#fff' }]}>
             <Text style={styles.btnText}>Revenir à la citation du jour</Text>
           </Pressable>
         )}
 
         <Pressable
-          style={[styles.btn, { backgroundColor: colors.primary, marginTop: 8 }]}
+          style={[styles.btn, { backgroundColor: '#fff', marginTop: 8 }]}
           onPress={loadRandom}
         >
           <Text style={styles.btnText}>Citation aléatoire</Text>
@@ -104,5 +103,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btn: { paddingVertical: 12, paddingHorizontal: 24, borderRadius: 8, alignSelf: 'center' },
-  btnText: { color: '#fff', fontWeight: '600', fontSize: 18 },
+  btnText: { color: '#000', fontWeight: '600', fontSize: 18 },
 });

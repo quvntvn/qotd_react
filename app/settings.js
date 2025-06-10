@@ -4,6 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../lib/theme';
 import NotifService from '../lib/notifService';
+import { ExternalLink } from '@/components/ExternalLink';
 
 export default function Settings() {
   const { colors } = useTheme();
@@ -57,6 +58,12 @@ export default function Settings() {
           ))}
         </Picker>
       </View>
+
+      <Text style={[styles.credit, { color: colors.text }]}>Application créée par{' '}
+        <ExternalLink href="https://quvntvn.netlify.app/">
+          <Text style={[styles.link, { color: colors.primary }]}>Quvntvn</Text>
+        </ExternalLink>
+      </Text>
     </View>
   );
 }
@@ -67,4 +74,6 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
   label: { fontSize: 16 },
   picker: { height: 32, width: 120 },
+  credit: { marginTop: 32, textAlign: 'center', fontSize: 14 },
+  link: { textDecorationLine: 'underline' },
 });
