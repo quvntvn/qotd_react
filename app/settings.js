@@ -48,12 +48,12 @@ export default function Settings() {
         <Text style={[styles.label, { color: colors.text }]}>Heure de la notification</Text>
         <Picker
           selectedValue={hour.h}
-          style={[styles.picker, { color: colors.text }]}
+          style={[styles.picker, { color: '#000' }]}
           onValueChange={changeHour}
-          dropdownIconColor={colors.text}
+          dropdownIconColor="#000"
         >
           {Array.from({ length: 24 }, (_, i) => (
-            <Picker.Item key={i} label={`${i}h`} value={i} />
+            <Picker.Item key={i} label={`${i}h`} value={i} color="#000" />
           ))}
         </Picker>
       </View>
