@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   picker: { height: 32, width: 120 },
   credit: {
     position: 'absolute',
-    bottom: 16,
+    bottom: 32,
     left: 0,
     right: 0,
     textAlign: 'center',
