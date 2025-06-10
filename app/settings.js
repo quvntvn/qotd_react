@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
+import { Stack } from 'expo-router';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../lib/theme';
@@ -36,9 +37,9 @@ export default function Settings() {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.bg }]}>
-
-      <Text style={[styles.h1, { color: colors.text }]}>Paramètres</Text>
+    <>
+      <Stack.Screen options={{ title: 'Paramètres' }} />
+      <View style={[styles.container, { backgroundColor: colors.bg }]}>
 
       <View style={styles.row}>
         <Text style={[styles.label, { color: colors.text }]}>Notifications quotidiennes</Text>
@@ -65,6 +66,7 @@ export default function Settings() {
         </ExternalLink>
       </Text>
     </View>
+    </>
   );
 }
 
