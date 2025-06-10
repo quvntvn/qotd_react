@@ -61,7 +61,7 @@ export default function Settings() {
 
       <Text style={[styles.credit, { color: colors.text }]}>Application créée par{' '}
         <ExternalLink href="https://quvntvn.netlify.app/">
-          <Text style={[styles.link, { color: colors.primary }]}>Quvntvn</Text>
+          <Text style={[styles.link]}>Quvntvn</Text>
         </ExternalLink>
       </Text>
     </View>
@@ -69,11 +69,18 @@ export default function Settings() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, paddingTop: 72 },
+  container: { flex: 1, padding: 24, paddingTop: 72, paddingBottom: 24 },
   h1: { fontSize: 24, fontWeight: '700', marginBottom: 32 },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
   label: { fontSize: 16 },
   picker: { height: 32, width: 120 },
-  credit: { marginTop: 32, textAlign: 'center', fontSize: 14 },
-  link: { textDecorationLine: 'underline' },
+  credit: {
+    position: 'absolute',
+    bottom: 16,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    fontSize: 14,
+  },
+  link: { textDecorationLine: 'underline', color: '#fff' },
 });
